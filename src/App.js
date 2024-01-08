@@ -3,6 +3,10 @@ import { GoPlus } from "react-icons/go";
 import ShoppingList from "./Components/ShoppingList";
 import {collection, onSnapshot, query, querySnapshot, updateDoc, doc, addDoc, deleteDoc } from "firebase/firestore";
 import {db} from './firebase'
+import Welcome from "./Components/Welcome";
+import Homepage from "./Components/Homepage";
+
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 
 
@@ -84,8 +88,17 @@ function App() {
       
     //   </div>
     // </div>
-    <ShoppingList></ShoppingList>
+    <div className="app">
+    
+    <Router>
+      <Routes>
+        <Route path="/" element={<Welcome/>}/>
+        <Route path="/homepage" element={<Homepage/>}/>
+      </Routes>
+    </Router>
+    </div>
   );
 }
 
 export default App;
+//<ShoppingList></ShoppingList>
