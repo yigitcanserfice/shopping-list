@@ -51,25 +51,33 @@ useEffect(() =>{
   }
 
   return (
-    <div>
-      <h1>Shopping List</h1>
+    <div className='h-screen w-screen p-4 bg-gradient-to-r from-[#7BD3EA] to-[#A1EEBD]'>
+      <div className='bg-slate-100 w-full m-auto max-w-[500px] rounded-md shadow-xl p-5 flex flex-col'>
+     
+      <h1 className='font-bold text-3xl text-center text-gray-600 p-2 mb-5'>Shopping List</h1>
       <div>
       {isRegistering ?(
       <>
-      <input type="email" placeholder='Email' value={registerInfo.email} onChange={(e)=> setregisterInfo({...registerInfo, email: e.target.value})} className=' border-2'/>
-      <input type="email" placeholder='Confirm Email' value={registerInfo.confirmEmail} onChange={(e)=> setregisterInfo({...registerInfo, confirmEmail: e.target.value})} className=' border-2'/>
-      <input type="password" placeholder='Password' value={registerInfo.password} onChange={(e)=> setregisterInfo({...registerInfo, password: e.target.value})} className=' border-2' />
-      <input type="password" placeholder='Confirm Password' value={registerInfo.confirmPassword} onChange={(e)=> setregisterInfo({...registerInfo, confirmPassword: e.target.value})} className=' border-2' />
-      <button onClick={handleRegister} className='bg-red-500 text-slate-200'>Register</button>
-      <button onClick={()=> setisRegistering(false)}>Go Back</button>
+      <div className='flex flex-col gap-2'>
+      <input type="email" placeholder='Email' value={registerInfo.email} onChange={(e)=> setregisterInfo({...registerInfo, email: e.target.value})} className=' border-2 p-1'/>
+      <input type="email" placeholder='Confirm Email' value={registerInfo.confirmEmail} onChange={(e)=> setregisterInfo({...registerInfo, confirmEmail: e.target.value})} className=' border-2 p-1'/>
+      <input type="password" placeholder='Password' value={registerInfo.password} onChange={(e)=> setregisterInfo({...registerInfo, password: e.target.value})} className=' border-2 p-1' />
+      <input type="password" placeholder='Confirm Password' value={registerInfo.confirmPassword} onChange={(e)=> setregisterInfo({...registerInfo, confirmPassword: e.target.value})} className=' border-2 p-1' />
+      
+      <button onClick={handleRegister} className='bg-blue-500 py-1.5 font-semibold text-slate-200'>Register</button>
+      <button onClick={()=> setisRegistering(false)} className='bg-red-500 py-1.5 font-semibold text-slate-200'>Go Back</button>
+      </div>
       </>)
       :(
       <>
-      <input type="email" onChange={handleEmailChange} value={email} className=' border-2'/>
-      <input type="password" onChange={handlePasswordChange} value={password} className=' border-2' />
-      <button onClick={handleSignIn} className='bg-red-500 text-slate-200'>Sign In</button>
-      <button onClick={()=> setisRegistering(true)}>Create an account</button>
+      <div className='flex flex-col gap-2'> 
+      <input type="email" placeholder='Email' onChange={handleEmailChange} value={email} className=' border-2 p-1'/>
+      <input type="password" placeholder='Password' onChange={handlePasswordChange} value={password} className=' border-2 p-1' />
+      <button onClick={handleSignIn} className='bg-blue-500 py-1.5 text-slate-200 font-semibold'>Sign In</button>
+      <button onClick={()=> setisRegistering(true)} className='bg-gray-500 py-1.5 text-slate-200 font-semibold'>Create an account</button>
+      </div>
       </> )}
+      </div>
       </div>
     </div>
   )
