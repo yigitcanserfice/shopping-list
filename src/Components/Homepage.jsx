@@ -129,7 +129,12 @@ export default function Homepage() {
 
   return (
     <div className='h-screen w-screen p-4 bg-gradient-to-r from-[#7BD3EA] to-[#A1EEBD]'>
-      <div className='bg-slate-100 w-full m-auto max-w-[500px] rounded-md shadow-xl p-5 relative'>
+      
+      <div className='bg-slate-100 w-full m-auto max-w-[500px] rounded-md shadow-xl p-5'>
+        <div className='flex justify-end -mt-2 -mr-2'>
+        <button onClick={handleSignOut} className=' rounded-md bg-red-500 text-slate-200 font-semibold px-2 py-1'>Sign Out</button>
+        </div>
+      
         <h3 className='font-bold text-3xl text-center text-gray-600 p-2 mb-5'>Shopping List</h3>
         <form onSubmit={createList} className='flex justify-between'>
           <input value={input} onChange={(e) => setInput(e.target.value)} className='border p-2 w-full text-lg' type="text" placeholder="Add Shopping Item"/>
@@ -142,7 +147,7 @@ export default function Homepage() {
           ))}
         </ul>
         {items.length < 1 ? '' : <p className="text-center p2">{`You have ${items.length} shopping items`}</p>}
-        <button onClick={handleSignOut} className='absolute right-3 top-3 rounded-md bg-red-500 text-slate-200 font-semibold px-2 py-1'>Sign Out</button>
+        
       </div>
       
    
