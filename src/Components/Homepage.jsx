@@ -15,31 +15,7 @@ export default function Homepage() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        navigate('/');
-      } else {
-        // Kullanıcı oturumu kontrolü bittikten sonra veri çekme işlemini gerçekleştir
-        const q = collection(db, `/${auth.currentUser.uid}`);
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          let itemsArr = [];
-          querySnapshot.forEach((doc) => {
-            itemsArr.push({ ...doc.data(), id: doc.id });
-          });
-          setItems(itemsArr);
-        });
-  
-        return () => unsubscribe;
-      }
-    });
-  
-    return () => {
-      unsubscribeAuth();
-    };
-  }, [auth.currentUser, navigate]);
-
-  // Create shopping list
+  //Create  shoppingList -> Daha önce şu anki kullanıcıya özel bir collection oluşturulmadıysa oluşturur ve veri girişi yapar.
   const createList = async (e) => {
     const uidd = uid();
     e.preventDefault(e);
@@ -64,30 +40,34 @@ export default function Homepage() {
     setDesc('');
   }
 
-  //Share shopping List
+  // Read shopping list -> Kullanıcı oturumu kontrolü bittikten sonra şu anki kullanıcının id sine göre verileri çek.
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate('/');
+      } else {
+       
+        const q = collection(db, `/${auth.currentUser.uid}`);
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let itemsArr = [];
+          querySnapshot.forEach((doc) => {
+            itemsArr.push({ ...doc.data(), id: doc.id });
+          });
+          setItems(itemsArr);
+        });
+  
+        return () => unsubscribe;
+      }
+    });
+  
+    return () => {
+      unsubscribeAuth();
+    };
+  }, [auth.currentUser, navigate]);
+
 
   
-
-  // Read shopping list
-  useEffect(() => {
-    // auth.currentUser nesnesi null olabilir, bu durumu kontrol et
-    if (!auth.currentUser) {
-      return;
-    }
-
-    const q = collection(db, `/${auth.currentUser.uid}`);
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let itemsArr = [];
-      querySnapshot.forEach((doc) => {
-        itemsArr.push({ ...doc.data(), id: doc.id });
-      });
-      setItems(itemsArr);
-    });
-
-    return () => unsubscribe;
-  }, [auth.currentUser]); // useEffect'in bağımlılık listesine auth.currentUser ekleyin
-
-  // Update shopping list
+  // Update shopping list -> Verileri güncellediğimiz kısım.
   const updateItem = async (id, newText) => {
     // auth.currentUser nesnesi null olabilir, bu durumu kontrol et
     if (!auth.currentUser) {
@@ -99,7 +79,7 @@ export default function Homepage() {
     });
   };
 
-  // ToggleComplete
+  // ToggleComplete -> listedeki itemın complate özelliğini tıklandığında true ve false yap.
   const toggleComplete = async (item) => {
     // auth.currentUser nesnesi null olabilir, bu durumu kontrol et
     if (!auth.currentUser) {
@@ -111,7 +91,7 @@ export default function Homepage() {
     })
   }
 
-  // Delete shopping list
+  // Delete shopping list -> listedki item i silme işlemi
   const deleteItem = async (id) => {
     // auth.currentUser nesnesi null olabilir, bu durumu kontrol et
     if (!auth.currentUser) {
@@ -121,12 +101,16 @@ export default function Homepage() {
     await deleteDoc(doc(db, `/${auth.currentUser.uid}`, id))
   }
 
+
+  // Çıkış yapma.
   const handleSignOut = () => {
     signOut(auth).then(() => {
       navigate('/')
     }).catch(err => alert(err.message))
   }
 
+
+  //Homepage tasarımı
   return (
     <div className='h-screen w-screen p-4 bg-gradient-to-r from-[#7BD3EA] to-[#A1EEBD]'>
       

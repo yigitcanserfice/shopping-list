@@ -16,6 +16,8 @@ const [registerInfo, setregisterInfo] = useState({
 
 
 const navigate = useNavigate()
+
+// Kullanıcı giriş yapmışsa /homepage e yönlendir.
   
 useEffect(() =>{
   auth.onAuthStateChanged((user) =>{
@@ -25,18 +27,32 @@ useEffect(() =>{
   })
 },[])
 
+
+  // Inputları çek.
   const handleEmailChange = (e) =>{
     setEmail(e.target.value)
   }
   const handlePasswordChange = (e) =>{
     setPassword(e.target.value)
   }
+
+  // Gerekli kontrolleri yaptıktan sonra giriş yap.
   const handleSignIn = () => {
+    if(!email){
+      alert("Please enter a valid email!")
+      return
+    } else if(!password || password.length < 6){
+      alert("Please enter a valid password! (at least 6-digits password)")
+      return
+    }
+    
     signInWithEmailAndPassword(auth, email, password).then(()=>{
       navigate('/homepage')
     }).catch((err)=> alert(err.message))
   }
 
+
+  // Gerekli kontrolleri yaptıktan sonra kayıt ol.
   const handleRegister = () =>{
     if(registerInfo.email !== registerInfo.confirmEmail){
       alert("Please confirm that emails are the same!")
@@ -44,18 +60,22 @@ useEffect(() =>{
     } else if(registerInfo.password !== registerInfo.confirmPassword){
       alert("Please confirm that passwords are the same!")
       return
+    } else if(registerInfo.password.length < 6){
+      alert("Please enter a valid password! (at least 6-digits password)")
     }
     createUserWithEmailAndPassword(auth, registerInfo.email, registerInfo.password).then(()=>{
       navigate('/homepage')
     }).catch((err)=> alert(err.message))
   }
-
+  
+  // Giriş ekranı ve kayıt ol ekranlarının tasarımı ve yönlendirmeleri
   return (
     <div className='h-screen w-screen p-4 bg-gradient-to-r from-[#7BD3EA] to-[#A1EEBD]'>
       <div className='bg-slate-100 w-full m-auto max-w-[500px] rounded-md shadow-xl p-5 flex flex-col'>
      
       <h1 className='font-bold text-3xl text-center text-gray-600 p-2 mb-5'>Shopping List</h1>
       <div>
+      
       {isRegistering ?(
       <>
       <div className='flex flex-col gap-2'>
